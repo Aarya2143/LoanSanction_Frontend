@@ -1,0 +1,34 @@
+.stable-job-inline {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.stable-job-inline input[type="checkbox"] {
+  transform: scale(1.3); /* Bigger checkbox for visibility */
+}
+
+.home-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.alert {
+  font-weight: bold;
+}
+
+form label {
+  font-weight: 600; /* Make all labels bolder */
+}
+
+button {
+  width: 100%;
+}
+
+/* Make form look cleaner */
+form {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
