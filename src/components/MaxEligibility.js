@@ -41,9 +41,6 @@ function MaxEligibility() {
         : monthlyIncome * 10;
 
     if (requested <= maxEligibleAmount) {
-      const sanctionedMsg = `✅ Loan sanctioned! Amount: ₹${requested}, Tenure: ${form.tenureMonths} months.`;
-      setMessage(sanctionedMsg);
-
       const loanRequestDTO = {
         applicantName: form.applicantName,
         age: Number(form.age),
@@ -59,22 +56,20 @@ function MaxEligibility() {
       setLoading(true);
       try {
         const res = await axios.post("http://localhost:8080/api/loans/apply", loanRequestDTO);
-        console.log("Loan saved", res.data);
+        console.log("Loan save response", res.data);
 
-        let saveMsg = "";
         if (res.data && res.data.id) {
-          saveMsg = ` Loan ID: ${res.data.id}`;
+          setMessage(`✅ Loan sanctioned! Amount: ₹${requested}, Tenure: ${form.tenureMonths} months. Loan ID: ${res.data.id}`);
         } else if (res.data && res.data.message) {
-          saveMsg = ` ${res.data.message}`;
+          // Backend sent a message like EMI exceeds 50% — just show it
+          setMessage(`❌ ${res.data.message}`);
         } else {
-          saveMsg = ` Saved: ${JSON.stringify(res.data)}`;
+          setMessage(`❌ Unexpected response: ${JSON.stringify(res.data)}`);
         }
-
-        setMessage(`${sanctionedMsg}${saveMsg}`);
 
       } catch (err) {
         console.error("Error saving loan", err);
-        setMessage(`${sanctionedMsg} But DB save failed: ${err.response?.data || err.message}`);
+        setMessage(`❌ ${err.response?.data || err.message}`);
       } finally {
         setLoading(false);
       }
@@ -204,7 +199,7 @@ function MaxEligibility() {
             required
           >
             <option value="">Select</option>
-            {[3,6,12,18,24,36,48,60].map((t) => (
+            {[3, 6, 12, 18, 24, 36, 48, 60].map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
